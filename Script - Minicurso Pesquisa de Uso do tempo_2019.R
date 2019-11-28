@@ -42,24 +42,22 @@ library("dplyr")
 
 ################ PROCEDIMENTO PARA DOWNLOAD DAS BASES
 
-# PRIMEIRO PASSO: BAIXAR AS BASES DE 1 A 6 
+# PRIMEIRO PASSO: BAIXAR AS BASES DE 2 e 5 
 # Baixar os arquivos em SPSS - já estão com algumas agregações feitas 
 # Os arquivos em DBF exigem uma programação mais complexa 
 
 ## SEGUNDO PASSO: 
 ## DEFINIR A PASTA ONDE OS ARQUIVOS SERÃO "DESCOMPRIMIDOS"
 
-setwd ("C:\\Users\\Jordana\\Documents\\BASES DE DADOS\\PERU")
+setwd ("C:\\Users\\DDCA\\Downloads")
 
 
 ################ MANIPULAÇÃO DAS BASES
 
-# Nessa prática, vamos utilizar os CAPÍTULOS: 200, 400 E 500  
+# Nessa prática, vamos utilizar os CAPÍTULOS: 200 E 500  
 
 #2	2010	56	286	Encuesta Nacional de Uso del Tiempo - ENUT	126	Características de los miembros del hogar		
 CAPITULO_200<- read.spss("286-Modulo126\\02_CAPITULO_200.sav",as.is = FALSE, to.data.frame = TRUE)
-#4	2010	56	286	Encuesta Nacional de Uso del Tiempo - ENUT	128	Tareas de apoyo al hogar	
-CAPITULO_400<- read.spss("286-Modulo128\\04_CAPITULO_400.sav",as.is = FALSE, to.data.frame = TRUE)
 #5	2010	56	286	Encuesta Nacional de Uso del Tiempo - ENUT	129	Tareas realizadas para el hogar			
 CAPITULO_500<- read.spss("286-Modulo129\\05_CAPITULO_500.sav",as.is = FALSE, to.data.frame = TRUE)
 
@@ -67,12 +65,10 @@ CAPITULO_500<- read.spss("286-Modulo129\\05_CAPITULO_500.sav",as.is = FALSE, to.
 # Algumas informações sobre a base de dados:
 # Dimensão (LINHAS X COLUNAS)
 dim(CAPITULO_200)
-dim(CAPITULO_400)
 dim(CAPITULO_500)
 
 # Nomes das variáveis
 colnames(CAPITULO_200)
-colnames(CAPITULO_400)
 colnames(CAPITULO_500)
 
 # Listar os primeiros casos de uma base
@@ -213,14 +209,11 @@ summary(CAPITULO_500$TDNR)
 # Por isso vamos criar um identificador com o mesmo nome em todas as três bases 
 names(CAPITULO_200)[names(CAPITULO_200) == "P200_ID"] <- "ID"
 CAPITULO_200$ID<-as.numeric(CAPITULO_200$ID)
-names(CAPITULO_400)[names(CAPITULO_400) == "P400A"] <- "ID"
-CAPITULO_400$ID<-as.numeric(CAPITULO_400$ID)
 names(CAPITULO_500)[names(CAPITULO_500) == "P500_A"] <- "ID"
 CAPITULO_500$ID<-as.numeric(CAPITULO_500$ID)
 # 1 Partindo da base que tem as características dos indivíduos, incoporar as demais bases 
 
 usodotempo <- left_join(CAPITULO_200, CAPITULO_500, by=c('CONGLOMERADO','NSELV', 'HOGAR','ID'))
-usodotempo <- left_join(usodotempo, CAPITULO_400, by=c('CONGLOMERADO','NSELV', 'HOGAR','ID'))
 
 
 # Formatar tela para alocar os gráficos 
@@ -348,7 +341,9 @@ avg <- function(x) {
 
 avg(x = "P204")
 
-
+### SUGESTÃO DE PRÁTICA
+# Encorporar  a base
+# 4	2010	56	286	Encuesta Nacional de Uso del Tiempo - ENUT	128	Tareas de apoyo al hogar
 
 ####MUITO OBRIGADA!
 
